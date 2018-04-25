@@ -14,7 +14,10 @@
     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" value="{{ request.form.password }}" name="password">
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
-
+</form>
+<br>
+<form action="/register" method="get">
+	<button type="submit" class="btn btn-primary">Sign up</button>
 </form>
 
 {% endblock %}

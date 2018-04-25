@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">ID</th>
+	      <th scope="col">Username</th>
+	      <th scope="col">Password</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	{% for item in data %}
+	    <tr>
+	      <th scope="row">{{item.id}}</th>
+	      <td>{{item.username}}</td>
+	      <td>{{item.password}}</td>
+	    </tr>
+	    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
