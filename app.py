@@ -1,6 +1,5 @@
-from flask import Flask, render_template, redirect, session, request
+from flask import Flask, render_template, redirect, session, request, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/register.db'
@@ -13,15 +12,17 @@ class userdata(db.Model):
 	password = db.Column(db.Integer, nullable=False)
 
 	def __repr__(self):
-		return str(self.id) + ', ' + self.username + ', ' + str(self.password) + '||'
-
-
-# newuserdata = userdata(username='tnntech', password=1111)
-# Add new data to database and commit
-# db.session.add(newuserdata)
-# db.session.commit()
+		return str(self.id) + ', ' + self.username + ', ' + str(self.password) + ''
 
 dataUser = userdata.query.all()
+userss = []
+newuserdata = userdata(username='vngs', password=1111)
+for data in dataUser:
+	userss.append(data.username)
+
+if (newuserdata.username not in userss):
+	db.session.add(newuserdata)
+	db.session.commit()
 
 
 @app.route("/")
@@ -40,9 +41,33 @@ def check():
 				check = True
 
 		if (check):
-			return redirect("/logined")
+			return redirect("/table")
 		else:
 			return redirect("/failure")
+
+
+@app.route("/register", methods=["GET"])
+def signin():
+	if request.method == "GET":
+		return render_template("register.html")
+
+
+@app.route("/register", methods=["POST"])
+def register():
+	if request.method == "POST":
+		theusername = request.form['username']
+		thepassword = request.form['password']
+		if theusername not in userss:
+			newUser = userdata(username=theusername, password=thepassword)
+			db.session.add(newUser)
+			db.session.commit()
+			return render_template("thanks.html")
+	return render_template("sorry.html")
+
+
+@app.route("/table")
+def table():
+	return render_template("table.html", data=dataUser)
 
 
 @app.route("/logined")
